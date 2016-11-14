@@ -10,20 +10,20 @@ maxgens = 100
 def bitfield(n):
     return [1 if digit == "1" else 0 for digit in bin(n)[2:]]
 
+
 def decode(value):
     for i in range(7 - len(value)):
         value.insert(0, 0)
-    return shifting(value)
-
-def shifting(bitlist):
     out = 0
-    for bit in bitlist:
+    for bit in value:
         out = (out << 1) | bit
     return out
 
+
 def fitness(value):
-    x = decode(value)
-    return abs((x - toGuess) / toGuess)
+    val = decode(value)
+    return abs((val - toGuess) / toGuess)
+
 
 def generate_indv():
     val = rand.randint(0, maxint)
@@ -31,6 +31,7 @@ def generate_indv():
     for i in range(7 - len(indv)):
         indv.insert(0, 0)
     return indv
+
 
 def generatepopulation(size):
     return [generate_indv() for x in range(size)]
@@ -76,14 +77,14 @@ def main():
     pop = generatepopulation(popSize)
 
     # loop
-    done = 0
+    found = 0
     gen = 0
 
     # prime the population as sorted by fitness
     pop = sorted(pop, key=fitness)
 
     # run GA
-    while (done != 1 and gen <= maxgens):
+    while found != 1 and gen <= maxgens:
 
         # crossover/mutation and update population
         pop = crossover(pop)
@@ -94,13 +95,13 @@ def main():
         # if most fit is correct, finish up
         print("GENERATION " + str(gen))
         print("\tBEST SO FAR = " + str(decode(pop[0])))
-        if (fitness(pop[0]) == 0.0):
+        if fitness(pop[0]) == 0.0:
             print("FINISHED: Best individual = " + str(pop[0]) + " = " + str(decode(pop[0])))
-            done = 1
+            found = 1
         gen += 1
 
-    if done is 0:
-        print("the GA's best guess was " + str(decode(pop[0])))
+    if found is 0:
+        print("END: The GA's best guess after " + maxgens + " generations was " + str(decode(pop[0])))
 
 # end loop
 if __name__ == "__main__":
