@@ -101,7 +101,7 @@ def main():
         gen += 1
 
     if found is 0:
-        print("END: The GA's best guess after " + maxgens + " generations was " + str(decode(pop[0])))
+        print("END: The GA's best guess after " + str(maxgens) + " generations was " + str(decode(pop[0])) + " (did you give it a number greater than 127?)")
 
 # end loop
 if __name__ == "__main__":
